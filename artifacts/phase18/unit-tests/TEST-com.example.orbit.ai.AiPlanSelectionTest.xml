@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.ai.AiPlanSelectionTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:17.918Z" hostname="DESKTOP-GL5JG4L" time="0.012">
+  <properties/>
+  <testcase name="togglingAnEmptyStageSelectsEverything" classname="com.example.orbit.ai.AiPlanSelectionTest" time="0.007"/>
+  <testcase name="defaultsToEverythingSelected" classname="com.example.orbit.ai.AiPlanSelectionTest" time="0.002"/>
+  <testcase name="togglingAFullStageClearsIt" classname="com.example.orbit.ai.AiPlanSelectionTest" time="0.0"/>
+  <testcase name="togglingOneTaskOnlyAffectsThatKey" classname="com.example.orbit.ai.AiPlanSelectionTest" time="0.0"/>
+  <testcase name="selectedPlanIsNullWhenNothingIsSelected" classname="com.example.orbit.ai.AiPlanSelectionTest" time="0.0"/>
+  <testcase name="selectedPlanDropsDeselectedTasksAndEmptyStages" classname="com.example.orbit.ai.AiPlanSelectionTest" time="0.0"/>
+  <testcase name="missingStageIndexesAreSafe" classname="com.example.orbit.ai.AiPlanSelectionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

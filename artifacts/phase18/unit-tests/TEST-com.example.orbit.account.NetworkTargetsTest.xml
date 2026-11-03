@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.account.NetworkTargetsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:17.842Z" hostname="DESKTOP-GL5JG4L" time="0.047">
+  <properties/>
+  <testcase name="privateAndLoopbackHostsNeedLocalNetworkPermission" classname="com.example.orbit.account.NetworkTargetsTest" time="0.033"/>
+  <testcase name="malformedUrlsFallBackToNotRequiringThePermission" classname="com.example.orbit.account.NetworkTargetsTest" time="0.001"/>
+  <testcase name="publicHttpsEndpointsDoNotNeedLocalNetworkPermission" classname="com.example.orbit.account.NetworkTargetsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

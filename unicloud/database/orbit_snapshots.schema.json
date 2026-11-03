@@ -1,0 +1,43 @@
+{
+  "bsonType": "object",
+  "required": ["userId", "revision"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "文档主键，由云数据库生成"
+    },
+    "userId": {
+      "bsonType": "number"
+    },
+    "revision": {
+      "bsonType": "number",
+      "description": "乐观锁版本号"
+    },
+    "goals": {
+      "bsonType": "array"
+    },
+    "stages": {
+      "bsonType": "array"
+    },
+    "tasks": {
+      "bsonType": "array"
+    },
+    "habits": {
+      "bsonType": "array"
+    },
+    "habitRecords": {
+      "bsonType": "array"
+    },
+    "growthEvents": {
+      "bsonType": "array"
+    },
+    "updatedAt": {
+      "bsonType": "number"
+    }
+  }
+}

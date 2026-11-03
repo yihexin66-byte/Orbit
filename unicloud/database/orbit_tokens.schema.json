@@ -1,0 +1,29 @@
+{
+  "bsonType": "object",
+  "required": ["tokenHash", "userId", "expiresAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "文档主键，由云数据库生成"
+    },
+    "tokenHash": {
+      "bsonType": "string",
+      "description": "令牌的 SHA-256，只存哈希"
+    },
+    "userId": {
+      "bsonType": "number"
+    },
+    "createdAt": {
+      "bsonType": "number"
+    },
+    "expiresAt": {
+      "bsonType": "number",
+      "description": "30 天后的时间戳"
+    }
+  }
+}

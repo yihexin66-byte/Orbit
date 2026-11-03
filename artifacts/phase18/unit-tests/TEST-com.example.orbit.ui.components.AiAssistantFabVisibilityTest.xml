@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.ui.components.AiAssistantFabVisibilityTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:18.414Z" hostname="DESKTOP-GL5JG4L" time="0.002">
+  <properties/>
+  <testcase name="parkingAtAnEdgeDimsItFurther" classname="com.example.orbit.ui.components.AiAssistantFabVisibilityTest" time="0.001"/>
+  <testcase name="onlyTheMovedStatesReportAsDimmed" classname="com.example.orbit.ui.components.AiAssistantFabVisibilityTest" time="0.0"/>
+  <testcase name="movingAwayDimsTheDisc" classname="com.example.orbit.ui.components.AiAssistantFabVisibilityTest" time="0.0"/>
+  <testcase name="homeCornerStaysFullyOpaque" classname="com.example.orbit.ui.components.AiAssistantFabVisibilityTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

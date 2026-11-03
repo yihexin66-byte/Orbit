@@ -1,0 +1,26 @@
+[
+  {
+    "IndexName": "tokenHash_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "tokenHash",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "expiresAt",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "expiresAt",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

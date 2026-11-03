@@ -1,0 +1,49 @@
+{
+  "bsonType": "object",
+  "required": ["userId", "username", "passwordHash"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "文档主键，由云数据库生成"
+    },
+    "userId": {
+      "bsonType": "number",
+      "description": "客户端可见的稳定用户 ID"
+    },
+    "username": {
+      "bsonType": "string",
+      "description": "登录名，3-24 位"
+    },
+    "passwordHash": {
+      "bsonType": "string",
+      "description": "scrypt$N$r$p$salt$hash"
+    },
+    "nickname": {
+      "bsonType": "string",
+      "description": "展示昵称"
+    },
+    "avatarPath": {
+      "bsonType": "string",
+      "description": "/media/avatars/<key>"
+    },
+    "avatarKey": {
+      "bsonType": "string",
+      "description": "头像随机 key"
+    },
+    "avatarFileId": {
+      "bsonType": "string",
+      "description": "云存储 fileID"
+    },
+    "createdAt": {
+      "bsonType": "number"
+    },
+    "updatedAt": {
+      "bsonType": "number"
+    }
+  }
+}

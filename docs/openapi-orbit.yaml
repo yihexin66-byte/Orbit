@@ -1,0 +1,1175 @@
+openapi: 3.0.3
+info:
+  title: Orbit API
+  version: 2.4.0
+  description: |
+    Orbit 的账号、云同步与 AI 网关接口。所有业务端点都要求
+    `Authorization: Bearer <token>`，令牌由注册或登录返回，有效期 30 天。
+
+    部署入口（uniCloud 支付宝云）：
+    `https://env-00jy6ydc58ll.dev-hz.cloudbasefunction.cn/orbit`
+
+    日期约定：目标、阶段、任务的日期字段是 **epoch day**（北京时间自然日，
+    从 1970-01-01 起的天数）；`createdAt`、`completedAt`、`checkedAt`
+    等是 epoch 毫秒。AI 计划接口额外接受 `targetDateEpochDay`，并统一换算
+    成相对今天的天数交给模型。
+
+    AI 额度按账号、按北京时间自然日计算：计划 6 次、复盘 4 次；额度在
+    调用模型前扣减，失败也会计入。AI 令牌只保存在云函数环境变量，客户端
+    永远不会接触。
+servers:
+  - url: https://env-00jy6ydc58ll.dev-hz.cloudbasefunction.cn/orbit
+    description: uniCloud 支付宝云（生产）
+  - url: http://10.0.2.2:8080
+    description: 本机 Spring Boot（模拟器调试）
+tags:
+  - name: Health
+  - name: Auth
+  - name: Profile
+  - name: Sync
+  - name: AI
+  - name: Media
+security:
+  - bearerAuth: []
+paths:
+  /api/health:
+    get:
+      tags: [Health]
+      summary: 健康检查
+      security: []
+      responses:
+        '200':
+          description: 服务可用
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  backend:
+                    type: string
+                    example: unicloud
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: 注册并获取令牌
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        '201':
+          description: 注册成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: 用户名已被注册
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCOUNT_EXISTS
+                message: 这个用户名已经被注册
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: 登录并获取令牌
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: 用户名或密码不正确
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: LOGIN_FAILED
+                message: 用户名或密码不正确
+  /api/auth/logout:
+    post:
+      tags: [Auth]
+      summary: 退出登录并吊销当前令牌
+      responses:
+        '200':
+          description: 已退出
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/me:
+    get:
+      tags: [Profile]
+      summary: 读取当前账号
+      responses:
+        '200':
+          description: 当前账号
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      tags: [Profile]
+      summary: 修改昵称
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nickname]
+              properties:
+                nickname:
+                  type: string
+                  minLength: 1
+                  maxLength: 24
+      responses:
+        '200':
+          description: 修改后的账号
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: 昵称不合法
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: NICKNAME_INVALID
+                message: 昵称长度需为 1-24 个字符
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/me/avatar:
+    post:
+      tags: [Profile]
+      summary: 上传头像（JSON base64）
+      description: |
+        客户端先压缩到最长边 768 px、JPEG 82，再编码为 base64。服务端解码后
+        再次检查 1.4 MB；支付宝云 URL 化的请求体上限为 32 MB。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [contentBase64, contentType]
+              properties:
+                contentBase64:
+                  type: string
+                  description: JPEG / PNG / WEBP 的 base64
+                contentType:
+                  type: string
+                  enum: [image/jpeg, image/png, image/webp]
+      responses:
+        '200':
+          description: 更新后的账号，`avatarPath` 指向 `/media/avatars/<key>`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: 头像数据不合法
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: 头像超过 1.4 MB
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AVATAR_TOO_LARGE
+                message: 头像不能超过 1.4 MB，请重新选择照片
+        '415':
+          description: 不支持的图片类型
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AVATAR_TYPE
+                message: 仅支持 JPG、PNG 或 WEBP 图片
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/sync:
+    get:
+      tags: [Sync]
+      summary: 拉取整包快照
+      responses:
+        '200':
+          description: 当前快照
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Snapshot'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      tags: [Sync]
+      summary: 推送整包快照（revision CAS）
+      description: |
+        请求必须带上读取时的 `revision` 作为 `baseRevision`。服务端只有
+        `baseRevision` 等于当前 revision 时才接受写入并递增 revision；否则
+        返回 409，**响应体就是最新快照本身**（不是 Error 包装），客户端据此
+        覆盖本地缓存。每个数组最多 5000 行，未知字段会被丢弃。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnapshotPush'
+      responses:
+        '200':
+          description: 写入后的快照（revision 已递增）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Snapshot'
+        '400':
+          description: 快照格式或数量不合法
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                revision:
+                  value:
+                    code: SYNC_REVISION
+                    message: 同步版本号不合法
+                tooLarge:
+                  value:
+                    code: SYNC_TOO_LARGE
+                    message: 任务数量超过单次同步上限
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: revision 冲突；body 是最新快照
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Snapshot'
+  /media/avatars/{key}:
+    get:
+      tags: [Media]
+      summary: 头像跳转
+      description: 按 key 反查账号并用 302 跳转到云存储临时地址。
+      security: []
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '302':
+          description: 跳转到临时文件地址
+        '404':
+          description: 未知 key
+  /api/ai/status:
+    get:
+      tags: [AI]
+      summary: AI 配置与今日额度
+      responses:
+        '200':
+          description: 状态
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/ai/plan:
+    post:
+      tags: [AI]
+      summary: 生成学习计划
+      description: |
+        只接受结构化结果：1–6 个阶段、每阶段 1–5 个任务、总计不超过 20 个。
+        模型输出不合法时服务端会请求一次修复；仍失败返回
+        `AI_INVALID_OUTPUT`。额度在调用模型前扣减。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiPlanRequest'
+      responses:
+        '200':
+          description: 规范化后的计划
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiPlanResponse'
+        '400':
+          description: 输入不合法
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_INPUT_INVALID
+                message: 请检查学习目标、目标日期和每日时长
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          description: 今日额度用完
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_QUOTA_EXCEEDED
+                message: 今日 AI 次数已用完，明天 00:00 重置
+        '502':
+          description: 模型输出两次都不合法
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_INVALID_OUTPUT
+                message: AI 返回的内容不完整，请换一种描述再试
+        '503':
+          description: 未配置或上游繁忙
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                notConfigured:
+                  value:
+                    code: AI_NOT_CONFIGURED
+                    message: AI 服务尚未配置
+                busy:
+                  value:
+                    code: AI_BUSY
+                    message: AI 服务繁忙，请稍后重试
+        '504':
+          description: 超过 25 秒预算
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_TIMEOUT
+                message: AI 响应超时，请稍后重试
+  /api/ai/review:
+    post:
+      tags: [AI]
+      summary: 生成周复盘
+      description: |
+        只接收聚合数据，不接收任务标题与备注。计划、习惯可能天数、XP、
+        目标四项全空时返回 400 `AI_NO_DATA`，不扣额度。额度在调用模型前
+        扣减，失败也计入。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiReviewRequest'
+      responses:
+        '200':
+          description: 规范化后的复盘
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiReviewResponse'
+        '400':
+          description: 输入不合法或没有可复盘数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalid:
+                  value:
+                    code: AI_INPUT_INVALID
+                    message: 本周统计数据不完整，请稍后重试
+                noData:
+                  value:
+                    code: AI_NO_DATA
+                    message: 本周还没有可复盘的数据，先完成一个任务或打卡
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          description: 今日额度用完
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_QUOTA_EXCEEDED
+                message: 今日 AI 次数已用完，明天 00:00 重置
+        '502':
+          description: 模型输出两次都不合法
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: 未配置或上游繁忙
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '504':
+          description: 超过 25 秒预算
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/ai/chat:
+    post:
+      tags: [AI]
+      summary: AI 学习助手对话
+      description: |
+        自由问答，返回纯文本。请求最多携带 8 轮历史（合计 2400 字）与聚合学习数据；
+        不接收任务、习惯正文或昵称。额度在调用模型前扣减，失败也计入。
+        空回复会映射为 502 `AI_INVALID_OUTPUT`，不触发结构化修复。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiChatRequest'
+      responses:
+        '200':
+          description: 规范化后的纯文本回复
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiChatResponse'
+        '400':
+          description: 输入不合法
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_INPUT_INVALID
+                message: 请输入 1-600 字的学习问题
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          description: 今日额度用完
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_QUOTA_EXCEEDED
+                message: 今日 AI 次数已用完，明天 00:00 重置
+        '502':
+          description: 模型返回空内容
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AI_INVALID_OUTPUT
+                message: AI 返回内容为空，请重试
+        '503':
+          description: 未配置或上游繁忙
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '504':
+          description: 超过 25 秒预算
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: opaque
+  responses:
+    BadRequest:
+      description: 参数校验失败
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: VALIDATION_FAILED
+            message: username 需为 3-24 位字母、数字或下划线
+    Unauthorized:
+      description: 令牌缺失、过期或账号不存在
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: UNAUTHORIZED
+            message: 登录状态已失效，请重新登录
+  schemas:
+    Credentials:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          pattern: '^[A-Za-z0-9_]{3,24}$'
+        password:
+          type: string
+          minLength: 6
+          maxLength: 64
+    User:
+      type: object
+      required: [id, username, nickname, avatarPath, createdAt]
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        nickname:
+          type: string
+          maxLength: 24
+        avatarPath:
+          type: string
+          nullable: true
+          example: /media/avatars/0123456789abcdef0123456789abcdef
+        createdAt:
+          type: integer
+          format: int64
+          description: epoch 毫秒
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+          description: 30 天有效的 Bearer 令牌
+        user:
+          $ref: '#/components/schemas/User'
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          example: VALIDATION_FAILED
+        message:
+          type: string
+          description: 可直接展示给用户的中文说明
+    Snapshot:
+      type: object
+      required:
+        - revision
+        - goals
+        - stages
+        - tasks
+        - habits
+        - habitRecords
+        - growthEvents
+      properties:
+        revision:
+          type: integer
+          minimum: 0
+        goals:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/Goal'
+        stages:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/GoalStage'
+        tasks:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/Task'
+        habits:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/Habit'
+        habitRecords:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/HabitRecord'
+        growthEvents:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/GrowthEvent'
+    SnapshotPush:
+      type: object
+      required:
+        - baseRevision
+        - goals
+        - stages
+        - tasks
+        - habits
+        - habitRecords
+        - growthEvents
+      properties:
+        baseRevision:
+          type: integer
+          minimum: 0
+        goals:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/Goal'
+        stages:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/GoalStage'
+        tasks:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/Task'
+        habits:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/Habit'
+        habitRecords:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/HabitRecord'
+        growthEvents:
+          type: array
+          maxItems: 5000
+          items:
+            $ref: '#/components/schemas/GrowthEvent'
+    Tone:
+      type: string
+      enum: [CYAN, VIOLET, ROSE, GOLD]
+    Goal:
+      type: object
+      required: [id, title]
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          maxLength: 60
+        description:
+          type: string
+          nullable: true
+        tone:
+          $ref: '#/components/schemas/Tone'
+        status:
+          type: string
+          enum: [ACTIVE, PAUSED, COMPLETED, ARCHIVED]
+        targetDate:
+          type: integer
+          nullable: true
+          description: epoch day
+        createdAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+        completedAt:
+          type: integer
+          format: int64
+          nullable: true
+        sortOrder:
+          type: integer
+    GoalStage:
+      type: object
+      required: [id, goalId, title]
+      properties:
+        id:
+          type: integer
+          format: int64
+        goalId:
+          type: integer
+          format: int64
+        title:
+          type: string
+          maxLength: 60
+        position:
+          type: integer
+        targetDate:
+          type: integer
+          nullable: true
+          description: epoch day
+        isCompleted:
+          type: boolean
+        completedAt:
+          type: integer
+          format: int64
+          nullable: true
+        createdAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+    Task:
+      type: object
+      required: [id, title]
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          maxLength: 80
+        description:
+          type: string
+          nullable: true
+        priority:
+          type: string
+          enum: [HIGH, MEDIUM, LOW]
+        category:
+          type: string
+          enum: [STUDY, WORK, LIFE, HEALTH, OTHER]
+        dueDate:
+          type: integer
+          nullable: true
+          description: epoch day
+        isCompleted:
+          type: boolean
+        createdAt:
+          type: integer
+          format: int64
+        completedAt:
+          type: integer
+          format: int64
+          nullable: true
+        goalId:
+          type: integer
+          format: int64
+          nullable: true
+        stageId:
+          type: integer
+          format: int64
+          nullable: true
+    Habit:
+      type: object
+      required: [id, title]
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          maxLength: 40
+        note:
+          type: string
+          nullable: true
+        tone:
+          $ref: '#/components/schemas/Tone'
+        createdAt:
+          type: integer
+          format: int64
+        archivedAt:
+          type: integer
+          format: int64
+          nullable: true
+        sortOrder:
+          type: integer
+    HabitRecord:
+      type: object
+      required: [id, habitId, epochDay]
+      properties:
+        id:
+          type: integer
+          format: int64
+        habitId:
+          type: integer
+          format: int64
+        epochDay:
+          type: integer
+          description: 打卡自然日
+        checkedAt:
+          type: integer
+          format: int64
+          description: epoch 毫秒
+    GrowthEvent:
+      type: object
+      description: 只增账本；`sourceKey` 唯一，保证同一成就只奖励一次。
+      required: [id, type, sourceKey, xp]
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          type: string
+          enum: [TASK_COMPLETED, HABIT_CHECKED, STAGE_COMPLETED, GOAL_COMPLETED]
+        sourceKey:
+          type: string
+          example: task:12
+        xp:
+          type: integer
+        occurredAt:
+          type: integer
+          format: int64
+        epochDay:
+          type: integer
+    AiStatus:
+      type: object
+      required: [configured, timeoutSeconds, limits, usage, dayKey]
+      properties:
+        configured:
+          type: boolean
+          description: 云函数是否同时配置了 COZE_API_TOKEN 与 COZE_BOT_ID
+        planPromptVersion:
+          type: string
+          nullable: true
+          example: plan-v1
+        reviewPromptVersion:
+          type: string
+          nullable: true
+          example: review-v1
+        chatPromptVersion:
+          type: string
+          nullable: true
+          example: chat-v1
+        timeoutSeconds:
+          type: integer
+          example: 25
+        limits:
+          type: object
+          required: [plan, review, chat]
+          properties:
+            plan:
+              type: integer
+              example: 6
+            review:
+              type: integer
+              example: 4
+            chat:
+              type: integer
+              example: 20
+        usage:
+          type: object
+          required: [planUsed, reviewUsed, chatUsed]
+          properties:
+            planUsed:
+              type: integer
+            reviewUsed:
+              type: integer
+            chatUsed:
+              type: integer
+        dayKey:
+          type: string
+          description: 北京时间自然日
+          example: '2026-10-28'
+    AiPlanRequest:
+      type: object
+      required: [goal]
+      properties:
+        goal:
+          type: string
+          minLength: 1
+          maxLength: 60
+          description: 学习目标；也接受字段名 goalTitle
+        targetDateEpochDay:
+          type: integer
+          description: 目标日期；缺省今天 + 56 天，允许今天到 +730 天
+        dailyMinutes:
+          type: integer
+          minimum: 10
+          maximum: 480
+          default: 45
+        currentLevel:
+          type: string
+          maxLength: 200
+        weakPoints:
+          type: string
+          maxLength: 200
+    AiPlanTask:
+      type: object
+      required: [title, dueDateEpochDay, priority]
+      properties:
+        title:
+          type: string
+          maxLength: 80
+        dueDateEpochDay:
+          type: integer
+          description: epoch day，已由服务端按今天 + dayOffset 换算
+        priority:
+          type: string
+          enum: [HIGH, MEDIUM, LOW]
+        description:
+          type: string
+          maxLength: 100
+    AiPlanStage:
+      type: object
+      required: [title, targetDateEpochDay, tasks]
+      properties:
+        title:
+          type: string
+          maxLength: 60
+        targetDateEpochDay:
+          type: integer
+        tasks:
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/AiPlanTask'
+    AiPlan:
+      type: object
+      required: [goalTitle, goalDescription, targetDateEpochDay, stages]
+      properties:
+        goalTitle:
+          type: string
+          maxLength: 60
+        goalDescription:
+          type: string
+          maxLength: 160
+        targetDateEpochDay:
+          type: integer
+        stages:
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/AiPlanStage'
+    AiPlanResponse:
+      type: object
+      required: [requestId, generatedAt, promptVersion, plan]
+      properties:
+        requestId:
+          type: string
+          example: 9f2c1a7b
+        generatedAt:
+          type: integer
+          format: int64
+        promptVersion:
+          type: string
+          example: plan-v1
+        plan:
+          $ref: '#/components/schemas/AiPlan'
+    AiReviewGoal:
+      type: object
+      required: [title, progress, stageCount, completedStages]
+      properties:
+        title:
+          type: string
+          maxLength: 60
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        stageCount:
+          type: integer
+        completedStages:
+          type: integer
+    AiReviewRequest:
+      type: object
+      properties:
+        weekStartEpochDay:
+          type: integer
+          description: 周一 epoch day；缺省本周，允许上周一到今天
+        planned:
+          type: integer
+          minimum: 0
+        completed:
+          type: integer
+          minimum: 0
+        studyPlanned:
+          type: integer
+          minimum: 0
+        studyCompleted:
+          type: integer
+          minimum: 0
+        habitPossible:
+          type: integer
+          minimum: 0
+        habitCheckIns:
+          type: integer
+          minimum: 0
+        xp:
+          type: integer
+          minimum: 0
+        goals:
+          type: array
+          maxItems: 8
+          items:
+            $ref: '#/components/schemas/AiReviewGoal'
+    AiReviewAction:
+      type: object
+      required: [title, reason]
+      properties:
+        title:
+          type: string
+          maxLength: 80
+        reason:
+          type: string
+          maxLength: 100
+    AiReview:
+      type: object
+      required: [headline, summary, wins, risks, nextWeek]
+      properties:
+        headline:
+          type: string
+          maxLength: 40
+        summary:
+          type: string
+          maxLength: 240
+        wins:
+          type: array
+          minItems: 1
+          maxItems: 4
+          items:
+            type: string
+            maxLength: 80
+        risks:
+          type: array
+          maxItems: 3
+          items:
+            type: string
+            maxLength: 80
+        nextWeek:
+          type: array
+          minItems: 1
+          maxItems: 3
+          items:
+            $ref: '#/components/schemas/AiReviewAction'
+    AiReviewResponse:
+      type: object
+      required: [requestId, generatedAt, promptVersion, review]
+      properties:
+        requestId:
+          type: string
+        generatedAt:
+          type: integer
+          format: int64
+        promptVersion:
+          type: string
+          example: review-v1
+        review:
+          $ref: '#/components/schemas/AiReview'
+    AiChatTurn:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+          maxLength: 700
+          description: 单条历史上限 700 字；只发送最近 8 轮，合计不超过 2400 字
+    AiChatGoal:
+      type: object
+      required: [title, progress]
+      properties:
+        title:
+          type: string
+          maxLength: 60
+        progress:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: 客户端传 0-1 或 0-100 均可；服务端统一归一到 0-1
+    AiChatContext:
+      type: object
+      description: 只发送聚合数字与最多 5 个目标标题，不接收任务 / 习惯正文或昵称
+      properties:
+        todayPlanned:
+          type: integer
+          minimum: 0
+        todayCompleted:
+          type: integer
+          minimum: 0
+        pendingCount:
+          type: integer
+          minimum: 0
+        completedCount:
+          type: integer
+          minimum: 0
+        habitTodayChecked:
+          type: integer
+          minimum: 0
+        habitTodayTotal:
+          type: integer
+          minimum: 0
+        totalXp:
+          type: integer
+          minimum: 0
+        thisWeekXp:
+          type: integer
+          minimum: 0
+        goals:
+          type: array
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/AiChatGoal'
+    AiChatRequest:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 600
+        history:
+          type: array
+          maxItems: 8
+          items:
+            $ref: '#/components/schemas/AiChatTurn'
+        context:
+          $ref: '#/components/schemas/AiChatContext'
+    AiChatResponse:
+      type: object
+      required: [requestId, generatedAt, promptVersion, reply]
+      properties:
+        requestId:
+          type: string
+          example: 3a71c9e2
+        generatedAt:
+          type: integer
+          format: int64
+        promptVersion:
+          type: string
+          example: chat-v1
+        reply:
+          type: string
+          maxLength: 1200
+          description: 已去掉代码围栏与「助手：」前缀，超过 1200 字会截断并加省略号

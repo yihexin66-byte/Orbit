@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.model.GoalMetricsTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:18.326Z" hostname="DESKTOP-GL5JG4L" time="0.006">
+  <properties/>
+  <testcase name="orderedGoalsSortsByStatusThenManualOrder" classname="com.example.orbit.model.GoalMetricsTest" time="0.004"/>
+  <testcase name="nextSortOrderAppendsAfterLastGoal" classname="com.example.orbit.model.GoalMetricsTest" time="0.0"/>
+  <testcase name="activeGoalsExcludeCompletedAndArchived" classname="com.example.orbit.model.GoalMetricsTest" time="0.001"/>
+  <testcase name="goalWithStagesAveragesStageProgress" classname="com.example.orbit.model.GoalMetricsTest" time="0.001"/>
+  <testcase name="stageProgressUsesLinkedTasksUntilManuallyCompleted" classname="com.example.orbit.model.GoalMetricsTest" time="0.0"/>
+  <testcase name="emptyGoalHasZeroProgress" classname="com.example.orbit.model.GoalMetricsTest" time="0.0"/>
+  <testcase name="goalWithoutStagesFallsBackToTaskCompletion" classname="com.example.orbit.model.GoalMetricsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

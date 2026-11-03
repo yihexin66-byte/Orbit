@@ -1,0 +1,38 @@
+[
+  {
+    "IndexName": "username_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "username",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "userId_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "userId",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "avatarKey",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "avatarKey",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

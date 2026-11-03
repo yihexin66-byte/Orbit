@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="68" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-11-03T09:43:45" hostname="localhost">
+  <testsuite name="com.example.orbit.AiVisualScreenshotTest" tests="4" failures="0" errors="0" skipped="0" time="17.262" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="capturePlanForm" classname="com.example.orbit.AiVisualScreenshotTest" time="4.770" />
+    <testcase name="captureReviewPrompt" classname="com.example.orbit.AiVisualScreenshotTest" time="4.757" />
+    <testcase name="capturePlanPreview" classname="com.example.orbit.AiVisualScreenshotTest" time="3.790" />
+    <testcase name="captureWeeklyReview" classname="com.example.orbit.AiVisualScreenshotTest" time="3.945" />
+  </testsuite>
+  <testsuite name="com.example.orbit.AuthGateTest" tests="5" failures="0" errors="0" skipped="0" time="15.646" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="passwordVisibilityCanBeToggledForBothFields" classname="com.example.orbit.AuthGateTest" time="5.050" />
+    <testcase name="seededNicknameGreetsTheUserOnHome" classname="com.example.orbit.AuthGateTest" time="3.231" />
+    <testcase name="loggingOutFromTheAccountCardReturnsToTheGateForAnotherAccount" classname="com.example.orbit.AuthGateTest" time="4.505" />
+    <testcase name="cacheResetIsSafeFromTheMainThread" classname="com.example.orbit.AuthGateTest" time="0.108" />
+    <testcase name="signedOutLaunchShowsOnlyTheAuthGate" classname="com.example.orbit.AuthGateTest" time="2.752" />
+  </testsuite>
+  <testsuite name="com.example.orbit.CoreEdgeCaseTest" tests="4" failures="0" errors="0" skipped="0" time="22.785" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="eightyCharacterTitleRemainsUsable" classname="com.example.orbit.CoreEdgeCaseTest" time="6.119" />
+    <testcase name="backClosesDetailAndReturnsHomeFromAnotherTab" classname="com.example.orbit.CoreEdgeCaseTest" time="5.817" />
+    <testcase name="repeatedToggleInOneFrameCommitsOnceAndStatsReachFullRate" classname="com.example.orbit.CoreEdgeCaseTest" time="5.925" />
+    <testcase name="primaryTouchTargetsMeet48Dp" classname="com.example.orbit.CoreEdgeCaseTest" time="4.924" />
+  </testsuite>
+  <testsuite name="com.example.orbit.GoalStageUiFlowTest" tests="1" failures="0" errors="0" skipped="0" time="14.987" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="stageLifecycleKeepsLinkedTaskThroughStageAndGoalDelete" classname="com.example.orbit.GoalStageUiFlowTest" time="14.987" />
+  </testsuite>
+  <testsuite name="com.example.orbit.GoalUiFlowTest" tests="1" failures="0" errors="0" skipped="0" time="10.664" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="createEditThroughDetailAndDeleteGoal" classname="com.example.orbit.GoalUiFlowTest" time="10.664" />
+  </testsuite>
+  <testsuite name="com.example.orbit.GrowthUiFlowTest" tests="2" failures="0" errors="0" skipped="0" time="14.353" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="taskHabitAndStageRewardsFeedGrowthAndProfile" classname="com.example.orbit.GrowthUiFlowTest" time="8.799" />
+    <testcase name="habitOnlyDataKeepsGrowthPageOutOfEmptyState" classname="com.example.orbit.GrowthUiFlowTest" time="5.554" />
+  </testsuite>
+  <testsuite name="com.example.orbit.HabitUiFlowTest" tests="1" failures="0" errors="0" skipped="0" time="14.844" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="habitLifecycleSyncsHomeAndPlanner" classname="com.example.orbit.HabitUiFlowTest" time="14.844" />
+  </testsuite>
+  <testsuite name="com.example.orbit.HomeVisualReviewTest" tests="1" failures="0" errors="0" skipped="0" time="6.451" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="captureHome" classname="com.example.orbit.HomeVisualReviewTest" time="6.451" />
+  </testsuite>
+  <testsuite name="com.example.orbit.LearningVisualReviewTest" tests="3" failures="0" errors="0" skipped="0" time="28.777" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="capturePoemSearchDailyPickAndWordBookmarks" classname="com.example.orbit.LearningVisualReviewTest" time="15.442" />
+    <testcase name="captureLearningLibraryAndDailyQuote" classname="com.example.orbit.LearningVisualReviewTest" time="8.891" />
+    <testcase name="captureDraggableAssistantAndCrossRingDrop" classname="com.example.orbit.LearningVisualReviewTest" time="4.444" />
+  </testsuite>
+  <testsuite name="com.example.orbit.OrbitInteractionTest" tests="10" failures="0" errors="0" skipped="0" time="45.508" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="moreThanNineTasksShowsOverflowAndOnlyNineNodes" classname="com.example.orbit.OrbitInteractionTest" time="4.340" />
+    <testcase name="enlargedHitTargetAcceptsTapOutsideVisualCircle" classname="com.example.orbit.OrbitInteractionTest" time="4.102" />
+    <testcase name="droppingNodeIntoCoreCompletesTheTask" classname="com.example.orbit.OrbitInteractionTest" time="4.377" />
+    <testcase name="draggingNodeOutwardMovesItToTheOuterRing" classname="com.example.orbit.OrbitInteractionTest" time="3.406" />
+    <testcase name="nodeClickOpensDetailWithTaskFieldsAndCloseClearsSelection" classname="com.example.orbit.OrbitInteractionTest" time="4.833" />
+    <testcase name="completingAndReopeningFromDetailUpdatesNodeRingAndProgress" classname="com.example.orbit.OrbitInteractionTest" time="4.919" />
+    <testcase name="emptyOrbitGhostOpensCreateSheet" classname="com.example.orbit.OrbitInteractionTest" time="3.715" />
+    <testcase name="dragMovesNodeWithoutOpeningDetailAndNodeStaysTappable" classname="com.example.orbit.OrbitInteractionTest" time="3.629" />
+    <testcase name="editingSelectedTaskKeepsDetailOpenAndShowsUpdatedTitle" classname="com.example.orbit.OrbitInteractionTest" time="6.000" />
+    <testcase name="deletingSelectedTaskClosesDetailAndRemovesNode" classname="com.example.orbit.OrbitInteractionTest" time="6.187" />
+  </testsuite>
+  <testsuite name="com.example.orbit.Phase17VisualReviewTest" tests="3" failures="0" errors="0" skipped="0" time="24.798" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="captureManualPickerAndRichCard" classname="com.example.orbit.Phase17VisualReviewTest" time="7.923" />
+    <testcase name="captureCompactHomeAndMergedPlanner" classname="com.example.orbit.Phase17VisualReviewTest" time="7.099" />
+    <testcase name="captureLearningTodayAndWordRound" classname="com.example.orbit.Phase17VisualReviewTest" time="9.776" />
+  </testsuite>
+  <testsuite name="com.example.orbit.ScreenshotGalleryTest" tests="1" failures="0" errors="0" skipped="0" time="17.261" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="capturePortfolioScreens" classname="com.example.orbit.ScreenshotGalleryTest" time="17.261" />
+  </testsuite>
+  <testsuite name="com.example.orbit.SettingsPersistenceTest" tests="1" failures="0" errors="0" skipped="0" time="9.075" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="appearanceChoicesSurviveRestartAndUnavailableReminderStaysHonest" classname="com.example.orbit.SettingsPersistenceTest" time="9.075" />
+  </testsuite>
+  <testsuite name="com.example.orbit.SwipeNavigationTest" tests="6" failures="0" errors="0" skipped="0" time="79.906" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="swipeLeftOnTheLastTabKeepsItOpen" classname="com.example.orbit.SwipeNavigationTest" time="3.317" />
+    <testcase name="swipeLeftStepsToTheNextTabAndSwipeRightStepsBack" classname="com.example.orbit.SwipeNavigationTest" time="4.834" />
+    <testcase name="swipeThatStartsOnACardTurnsThePageInsteadOfOpeningIt" classname="com.example.orbit.SwipeNavigationTest" time="3.165" />
+    <testcase name="shortSwipeDoesNotTurnThePage" classname="com.example.orbit.SwipeNavigationTest" time="3.170" />
+    <testcase name="swipeOnGoalDetailLeavesThePageAlone" classname="com.example.orbit.SwipeNavigationTest" time="3.763" />
+    <testcase name="aSlowDragTurnsThePageLikeAFlickDoes" classname="com.example.orbit.SwipeNavigationTest" time="61.657" />
+  </testsuite>
+  <testsuite name="com.example.orbit.TaskUiFlowTest" tests="2" failures="0" errors="0" skipped="0" time="88.860" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="createEditCompleteFilterDeleteAndPersistTasks" classname="com.example.orbit.TaskUiFlowTest" time="78.673" />
+    <testcase name="repeatedSaveRequestsCreateOnlyOneTask" classname="com.example.orbit.TaskUiFlowTest" time="10.187" />
+  </testsuite>
+  <testsuite name="com.example.orbit.WordStudyFlowTest" tests="2" failures="0" errors="0" skipped="0" time="43.432" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="autoRoundRetryWrongAndPersistAcrossRecreate" classname="com.example.orbit.WordStudyFlowTest" time="23.306" />
+    <testcase name="manualPickerStartsBookOrderAndKeepsSession" classname="com.example.orbit.WordStudyFlowTest" time="20.126" />
+  </testsuite>
+  <testsuite name="com.example.orbit.data.OrbitMigrationTest" tests="2" failures="0" errors="0" skipped="0" time="0.736" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="migrate1To2KeepsCompletedTaskTimestamp" classname="com.example.orbit.data.OrbitMigrationTest" time="0.542" />
+    <testcase name="migrate1To2PreservesTasksAndCreatesDomainTables" classname="com.example.orbit.data.OrbitMigrationTest" time="0.194" />
+  </testsuite>
+  <testsuite name="com.example.orbit.data.OrbitPreferencesStoreTest" tests="5" failures="0" errors="0" skipped="0" time="0.068" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="unknownStoredNamesFallBackInsteadOfCrashing" classname="com.example.orbit.data.OrbitPreferencesStoreTest" time="0.016" />
+    <testcase name="savedValuesAreReadByANewStoreAndViewModel" classname="com.example.orbit.data.OrbitPreferencesStoreTest" time="0.010" />
+    <testcase name="viewModelChangesAreWrittenToDiskAndDefaultsRemainWhenCleared" classname="com.example.orbit.data.OrbitPreferencesStoreTest" time="0.013" />
+    <testcase name="missingValuesUseStableDefaults" classname="com.example.orbit.data.OrbitPreferencesStoreTest" time="0.006" />
+    <testcase name="nonStringValuesFallBackInsteadOfCrashing" classname="com.example.orbit.data.OrbitPreferencesStoreTest" time="0.023" />
+  </testsuite>
+  <testsuite name="com.example.orbit.data.OrbitRepositoriesTest" tests="9" failures="0" errors="0" skipped="0" time="0.373" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="deletingStageKeepsTheGoalLinkOnTasks" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.029" />
+    <testcase name="stageMustBelongToTheSelectedGoal" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.048" />
+    <testcase name="taskCompletionAwardsXpOnlyOnceEvenAfterReopen" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.050" />
+    <testcase name="importPlanRejectsAnEmptyPlan" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.022" />
+    <testcase name="importPlanWritesGoalStagesAndStudyTasks" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.040" />
+    <testcase name="futureCheckInIsRejectedAndDeleteCascadesRecords" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.032" />
+    <testcase name="stageAndGoalCompletionEachAwardOnce" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.056" />
+    <testcase name="habitCheckInIsUniqueAndEarnedXpSurvivesUncheck" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.045" />
+    <testcase name="deletingGoalCascadesStagesAndDetachesTasks" classname="com.example.orbit.data.OrbitRepositoriesTest" time="0.051" />
+  </testsuite>
+  <testsuite name="com.example.orbit.data.TaskDaoTest" tests="5" failures="0" errors="0" skipped="0" time="0.249" timestamp="2026-11-03T09:43:45" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="blankTitleIsRejectedBeforeReachingRoom" classname="com.example.orbit.data.TaskDaoTest" time="0.023" />
+    <testcase name="completingRecordsTimestampAndReopeningClearsIt" classname="com.example.orbit.data.TaskDaoTest" time="0.035" />
+    <testcase name="fileBackedDatabaseSurvivesCloseAndReopen" classname="com.example.orbit.data.TaskDaoTest" time="0.093" />
+    <testcase name="createReadObserveFilterAndDelete" classname="com.example.orbit.data.TaskDaoTest" time="0.066" />
+    <testcase name="updateKeepsCompletionStateAndCreatedAt" classname="com.example.orbit.data.TaskDaoTest" time="0.032" />
+  </testsuite>
+</testsuites>

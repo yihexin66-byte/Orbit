@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.ui.navigation.TabSwipeTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:18.421Z" hostname="DESKTOP-GL5JG4L" time="0.008">
+  <properties/>
+  <testcase name="thePageFollowsTheFingerOneToOne" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.003"/>
+  <testcase name="onlyRootRoutesCanBecomeASwipeSource" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="thePageStaysPutForTheFirstFewPixels" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="swipeShorterThanTheThresholdKeepsThePage" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.001"/>
+  <testcase name="swipeOrderFollowsTheBottomBarEntries" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="travelSaysWhichWayThePageIsGoing" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="targetForCombinesTheRouteAndTheDirection" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.001"/>
+  <testcase name="nextWalksTowardsTheLastTabAndStopsThere" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="previousWalksBackToHomeAndStopsThere" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="unmeasuredLayoutNeverTurnsThePage" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="verticalScrollNeverDragsThePageSideways" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.001"/>
+  <testcase name="aSlowDragTurnsThePageAsFarAsAFastOne" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="diagonalDragIsNotAPageTurn" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.001"/>
+  <testcase name="thePagerTakesTheGestureBeforeTheCardCanFireItsTap" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="thresholdTakesTheWiderOfFractionAndFloor" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.001"/>
+  <testcase name="leftSwipeAdvancesAndRightSwipeGoesBack" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <testcase name="aPageWithNoNeighbourOnlyRubberBands" classname="com.example.orbit.ui.navigation.TabSwipeTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

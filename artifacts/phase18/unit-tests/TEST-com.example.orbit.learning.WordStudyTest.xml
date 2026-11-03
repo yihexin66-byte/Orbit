@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.learning.WordStudyTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:18.276Z" hostname="DESKTOP-GL5JG4L" time="0.044">
+  <properties/>
+  <testcase name="anAllKnownRoundHasNoRetry" classname="com.example.orbit.learning.WordStudyTest" time="0.003"/>
+  <testcase name="autoSelectionFallsBackToWrongWordsThenOldestStudied" classname="com.example.orbit.learning.WordStudyTest" time="0.005"/>
+  <testcase name="manualSelectionIsCappedAtFifty" classname="com.example.orbit.learning.WordStudyTest" time="0.001"/>
+  <testcase name="autoSelectionStopsWhenTheLibraryIsExhausted" classname="com.example.orbit.learning.WordStudyTest" time="0.001"/>
+  <testcase name="targetIsClampedToTheSupportedRange" classname="com.example.orbit.learning.WordStudyTest" time="0.0"/>
+  <testcase name="manualSelectionKeepsBookOrderAndDropsUnknownIds" classname="com.example.orbit.learning.WordStudyTest" time="0.001"/>
+  <testcase name="roundReportsAccuracyAndRetriesOnlyWrongWords" classname="com.example.orbit.learning.WordStudyTest" time="0.001"/>
+  <testcase name="autoSelectionNeverRepeatsAWordAndRespectsTheRoundCap" classname="com.example.orbit.learning.WordStudyTest" time="0.0"/>
+  <testcase name="recordsUpdateCountsAndDailyTotals" classname="com.example.orbit.learning.WordStudyTest" time="0.001"/>
+  <testcase name="wordSearchMatchesSpellingAndMeaning" classname="com.example.orbit.learning.WordStudyTest" time="0.028"/>
+  <testcase name="aCardMustBeRevealedBeforeItCanBeAnswered" classname="com.example.orbit.learning.WordStudyTest" time="0.001"/>
+  <testcase name="autoSelectionTakesUnseenWordsFirstInBookOrder" classname="com.example.orbit.learning.WordStudyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

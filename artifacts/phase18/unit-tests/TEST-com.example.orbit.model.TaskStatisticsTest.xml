@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.model.TaskStatisticsTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:18.384Z" hostname="DESKTOP-GL5JG4L" time="0.012">
+  <properties/>
+  <testcase name="statistics_reopenedOrHistoricalTasksOnlyCountWhileCompleted" classname="com.example.orbit.model.TaskStatisticsTest" time="0.003"/>
+  <testcase name="categoryBreakdown_shareAndCompletionRateAreZeroSafe" classname="com.example.orbit.model.TaskStatisticsTest" time="0.001"/>
+  <testcase name="weekdayLabel_matchesTheCivilEpochDay" classname="com.example.orbit.model.TaskStatisticsTest" time="0.0"/>
+  <testcase name="statistics_ignoresCompletedTasksWithoutTimestamp" classname="com.example.orbit.model.TaskStatisticsTest" time="0.0"/>
+  <testcase name="statistics_completionRateIsZeroSafePartialAndAllCompleted" classname="com.example.orbit.model.TaskStatisticsTest" time="0.001"/>
+  <testcase name="statistics_countsCompletionsAcrossLocalMidnightCorrectly" classname="com.example.orbit.model.TaskStatisticsTest" time="0.001"/>
+  <testcase name="trendDelta_comparesTodayWithYesterday" classname="com.example.orbit.model.TaskStatisticsTest" time="0.001"/>
+  <testcase name="completionStreak_countsBackFromTodayOrYesterdayAndStopsAtGap" classname="com.example.orbit.model.TaskStatisticsTest" time="0.0"/>
+  <testcase name="statistics_emptyDataHasSevenZeroDaysAndNoHistory" classname="com.example.orbit.model.TaskStatisticsTest" time="0.001"/>
+  <testcase name="statistics_categoryTotalsCoverEveryTask" classname="com.example.orbit.model.TaskStatisticsTest" time="0.001"/>
+  <testcase name="statistics_splitsTotalsFromSevenDayHistory" classname="com.example.orbit.model.TaskStatisticsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

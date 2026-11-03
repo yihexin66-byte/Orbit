@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.orbit.ui.orbit.OrbitLayoutTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-11-03T09:11:18.432Z" hostname="DESKTOP-GL5JG4L" time="0.022">
+  <properties/>
+  <testcase name="ninePendingNodesDoNotOverlapOnCommonPhoneWidths" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.013"/>
+  <testcase name="completedTaskCanBeParkedOnTheInnerRing" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="nearestRingSplitsAtTheMidpointBetweenTheRings" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="addingATaskKeepsEveryExistingAngleStable" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.001"/>
+  <testcase name="snapAndPlacementStayInsideTheOrbitBounds" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="nodeCentresFollowTheRingFractions" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="snapAvoidsEveryCrossRingNeighbour" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.004"/>
+  <testcase name="arrangeCapsNodesAndPutsPendingHighPriorityFirst" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="coreTargetAndDragRadiusStayInsideTheOrbit" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="snapChoosesNearestFreeSlotOnTheSameRing" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.001"/>
+  <testcase name="dragAngleUsesClockwiseDegreesFromTop" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="manualRingSurvivesCompletionAndRecomposition" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="hitTestUsesTheLargerTouchTargetAndPicksTheNearestNode" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.001"/>
+  <testcase name="completedNodesMoveOuterAndLeavePendingNodesInPlace" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.0"/>
+  <testcase name="manualRingsKeepTheWholeOrbitSeparatedOnCommonWidths" classname="com.example.orbit.ui.orbit.OrbitLayoutTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

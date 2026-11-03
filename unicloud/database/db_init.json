@@ -1,0 +1,71 @@
+{
+  "orbit_users": {
+    "data": [],
+    "index": [
+      {
+        "IndexName": "username_unique",
+        "MgoKeySchema": {
+          "MgoIndexKeys": [
+            { "Name": "username", "Direction": "1" }
+          ],
+          "MgoIsUnique": true
+        }
+      },
+      {
+        "IndexName": "userId_unique",
+        "MgoKeySchema": {
+          "MgoIndexKeys": [
+            { "Name": "userId", "Direction": "1" }
+          ],
+          "MgoIsUnique": true
+        }
+      },
+      {
+        "IndexName": "avatarKey",
+        "MgoKeySchema": {
+          "MgoIndexKeys": [
+            { "Name": "avatarKey", "Direction": "1" }
+          ],
+          "MgoIsUnique": false
+        }
+      }
+    ]
+  },
+  "orbit_tokens": {
+    "data": [],
+    "index": [
+      {
+        "IndexName": "tokenHash_unique",
+        "MgoKeySchema": {
+          "MgoIndexKeys": [
+            { "Name": "tokenHash", "Direction": "1" }
+          ],
+          "MgoIsUnique": true
+        }
+      },
+      {
+        "IndexName": "expiresAt",
+        "MgoKeySchema": {
+          "MgoIndexKeys": [
+            { "Name": "expiresAt", "Direction": "1" }
+          ],
+          "MgoIsUnique": false
+        }
+      }
+    ]
+  },
+  "orbit_snapshots": {
+    "data": [],
+    "index": [
+      {
+        "IndexName": "userId_unique",
+        "MgoKeySchema": {
+          "MgoIndexKeys": [
+            { "Name": "userId", "Direction": "1" }
+          ],
+          "MgoIsUnique": true
+        }
+      }
+    ]
+  }
+}
